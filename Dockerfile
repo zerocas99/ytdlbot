@@ -11,6 +11,8 @@ WORKDIR /app
 RUN apk update && apk add --no-cache ffmpeg aria2 deno
 COPY --from=pybuilder /build/.venv/lib/ /usr/local/lib/
 COPY src /app
+COPY health_server.py /app/health_server.py
 WORKDIR /app
 
-CMD ["python" ,"main.py"]
+EXPOSE 8080
+CMD ["sh", "-c", "python health_server.py & python main.py"]
